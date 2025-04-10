@@ -1,20 +1,22 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ThemeProvider, Global, css } from "@emotion/react";
+import { ThemeProvider } from "@emotion/react";
 import { theme } from "@/theme";
 import { GlobalStyles } from "@/globalStyles";
 
-export default function ClientLayout({ children }) {
+export default function AppProviders({ children }) {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
+  if (!isClient) return null;
+
   return (
     <ThemeProvider theme={theme}>
-      {isClient && <GlobalStyles />}
+      <GlobalStyles />
       {children}
     </ThemeProvider>
   );

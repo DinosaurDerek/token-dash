@@ -1,10 +1,10 @@
-import ClientLayout from "@/components/ClientLayout";
+import AppProviders from "@/components/AppProviders";
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <ClientLayout>{children}</ClientLayout>
+        <AppProviders>{children}</AppProviders>
       </body>
     </html>
   );

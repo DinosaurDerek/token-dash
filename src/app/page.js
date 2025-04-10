@@ -1,9 +1,12 @@
 "use client";
 
+import AppLayout from "@/components/AppLayout";
+import TokenList from "@/components/TokenList";
+
 export default function Home() {
   return (
-    <main>
-      <h1>Token Dash</h1>
-    </main>
+    <AppLayout>
+      <TokenList />
+    </AppLayout>
   );
 }
