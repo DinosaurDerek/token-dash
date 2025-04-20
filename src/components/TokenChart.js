@@ -12,39 +12,33 @@ import { useMemo } from "react";
 import dayjs from "dayjs";
 
 export default function TokenChart({ data }) {
-  // Memoize transformed chart data for performance
-  const chartData = useMemo(
-    () =>
-      data.map(({ timestamp, price }) => ({
-        timestamp,
-        time: dayjs(timestamp).format("MMM D"),
-        price,
-      })),
-    [data]
-  );
-  // Filter to show each day only once on the X-axis
-  const ticks = useMemo(() => {
+  const { chartData, xAxisTicks } = useMemo(() => {
     const seenDays = new Set();
-    return data
-      .filter(({ timestamp }) => {
-        const day = dayjs(timestamp).format("MMM D");
-        if (seenDays.has(day)) return false;
-        seenDays.add(day);
-        return true;
-      })
-      .map(({ timestamp }) => dayjs(timestamp).format("MMM D"));
+    const dataPoints = data.map(({ timestamp, price }) => {
+      const formattedDay = dayjs(timestamp).format("MMM D");
+      if (!seenDays.has(formattedDay)) {
+        seenDays.add(formattedDay);
+      }
+      return {
+        timestamp,
+        time: formattedDay,
+        price,
+      };
+    });
+    return { chartData: dataPoints, xAxisTicks: [...seenDays] };
   }, [data]);
 
   return (
     <div style={{ width: "100%", height: 300 }}>
       <ResponsiveContainer>
         <LineChart data={chartData}>
-          <XAxis dataKey="time" ticks={ticks.slice(1)} />
+          <XAxis dataKey="time" ticks={xAxisTicks.slice(1)} />
           <YAxis
             domain={["auto", "auto"]}
             tickFormatter={(val) => `$${val.toFixed(0)}`}
           />
           <Tooltip
+            // Custom tooltip shows full date and time
             content={({ active, payload, label }) => {
               const dataPoint = payload?.[0]?.payload;
 
