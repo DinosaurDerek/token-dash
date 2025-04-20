@@ -1,11 +1,12 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
+import TokenList from "./TokenList";
+
 export default function AppSidebar() {
   return (
     <aside css={styles.container}>
-      <p>Filters</p>
-      {/* Later: chain filter, category, etc */}
+      <TokenList />
     </aside>
   );
 }
