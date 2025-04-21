@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+import { formatPercent, formatCompactPrice } from "@/utils/format";
 import { fetchTopTokens } from "@/utils/fetchTokens";
 import { useToken } from "@/context/TokenContext";
 
@@ -25,8 +26,8 @@ export default function TokenList() {
       <ul>
         {tokens.map((token) => (
           <li key={token.id} onClick={() => setSelectedToken(token)}>
-            {token.name}: ${token.current_price.toLocaleString()} (
-            {token.price_change_percentage_24h.toFixed(2)}%)
+            {token.name}: {formatCompactPrice(token.current_price)}(
+            {formatPercent(token.price_change_percentage_24h)})
           </li>
         ))}
       </ul>

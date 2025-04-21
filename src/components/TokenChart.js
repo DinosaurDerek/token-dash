@@ -11,6 +11,12 @@ import {
 import { useMemo } from "react";
 import dayjs from "dayjs";
 
+import {
+  formatCompactPrice,
+  formatDateTime,
+  formatPrice,
+} from "@/utils/format";
+
 export default function TokenChart({ data }) {
   const { chartData, xAxisTicks } = useMemo(() => {
     const seenDays = new Set();
@@ -35,7 +41,7 @@ export default function TokenChart({ data }) {
           <XAxis dataKey="time" ticks={xAxisTicks.slice(1)} />
           <YAxis
             domain={["auto", "auto"]}
-            tickFormatter={(val) => `$${val.toFixed(0)}`}
+            tickFormatter={(val) => formatCompactPrice(val)}
           />
           <Tooltip
             // Custom tooltip shows full date and time
@@ -44,16 +50,14 @@ export default function TokenChart({ data }) {
 
               if (!active || !dataPoint) return null;
 
-              const dateAndTime = dayjs(dataPoint.timestamp).format(
-                "MMM D, h:mm A"
-              );
-
               return (
                 <div css={styles.tooltip}>
                   <div>
-                    <strong>{dateAndTime || label}</strong>
+                    <strong>
+                      {formatDateTime(dataPoint.timestamp) || label}
+                    </strong>
                   </div>
-                  <div>Price: ${dataPoint.price.toFixed(2)}</div>
+                  <div>Price: {formatPrice(dataPoint.price)}</div>
                 </div>
               );
             }}

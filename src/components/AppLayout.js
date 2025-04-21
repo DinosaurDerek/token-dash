@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import AppHeader from "./AppHeader";
-import AppSidebar from "./AppSidebar";
+import AppHeader from "@/components/AppHeader";
+import AppSidebar from "@/components/AppSidebar";
 
 export default function AppLayout({ children }) {
   return (
