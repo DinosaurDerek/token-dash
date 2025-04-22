@@ -12,10 +12,12 @@ export default function AppSidebar() {
 }
 
 const styles = {
-  container: {
-    width: "220px",
-    backgroundColor: "#161b22",
-    padding: "16px",
-    borderRight: "1px solid #30363d",
-  },
+  container: (theme) => ({
+    minWidth: "200px",
+    backgroundColor: theme.colors.backgroundSecondary,
+    padding: theme.spacing(2),
+    borderRight: theme.border,
+    height: `calc(100vh - ${theme.spacing(9)})`, // adjust for header height
+    overflowY: "auto",
+  }),
 };

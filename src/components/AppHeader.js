@@ -10,10 +10,10 @@ export default function AppHeader() {
 }
 
 const styles = {
-  container: {
-    backgroundColor: "#161b22",
-    padding: "16px 24px",
-    color: "#e6edf3",
-    borderBottom: "1px solid #30363d",
-  },
+  container: (theme) => ({
+    backgroundColor: theme.colors.backgroundSecondary,
+    padding: `${theme.spacing(2)} ${theme.spacing(3)}`,
+    borderBottom: theme.border,
+    height: theme.spacing(9),
+  }),
 };

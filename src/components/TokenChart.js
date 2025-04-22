@@ -35,13 +35,14 @@ export default function TokenChart({ data }) {
   }, [data]);
 
   return (
-    <div style={{ width: "100%", height: 300 }}>
+    <div css={styles.container}>
       <ResponsiveContainer>
         <LineChart data={chartData}>
           <XAxis dataKey="time" ticks={xAxisTicks.slice(1)} />
           <YAxis
             domain={["auto", "auto"]}
             tickFormatter={(val) => formatCompactPrice(val)}
+            padding={{ bottom: 16 }}
           />
           <Tooltip
             // Custom tooltip shows full date and time
@@ -57,7 +58,12 @@ export default function TokenChart({ data }) {
                       {formatDateTime(dataPoint.timestamp) || label}
                     </strong>
                   </div>
-                  <div>Price: {formatPrice(dataPoint.price)}</div>
+                  <div>
+                    Price:{" "}
+                    <span css={styles.priceValue}>
+                      {formatPrice(dataPoint.price)}
+                    </span>
+                  </div>
                 </div>
               );
             }}
@@ -76,12 +82,22 @@ export default function TokenChart({ data }) {
 }
 
 const styles = {
-  tooltip: {
-    background: "#1f2937",
-    color: "#f9fafb",
-    padding: "8px 12px",
-    borderRadius: 8,
+  container: (theme) => ({
+    width: "100%",
+    height: 300,
+    marginTop: theme.spacing(2),
+  }),
+  tooltip: (theme) => ({
+    background: theme.colors.card,
+    color: theme.colors.text,
+    padding: `${theme.spacing(1)} ${theme.spacing(1.5)}`,
+    border: `1px solid ${theme.colors.focusOutline}`,
+    borderRadius: theme.spacing(1),
     boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-    fontSize: 12,
-  },
+    fontSize: theme.fontSizes.small,
+  }),
+  priceValue: (theme) => ({
+    color: "#bcb4f7",
+    fontWeight: "bold",
+  }),
 };

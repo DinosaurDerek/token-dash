@@ -26,8 +26,8 @@ const styles = {
     display: "flex",
     flex: 1,
   },
-  main: {
+  main: (theme) => ({
     flex: 1,
-    padding: "24px",
-  },
+    padding: theme.spacing(3),
+  }),
 };

@@ -25,8 +25,8 @@ export default function AppContent() {
   if (!selectedToken) return <p>Select a token to view details</p>;
 
   return (
-    <div>
-      <h2>
+    <div css={styles.container}>
+      <h2 css={styles.heading}>
         {selectedToken.image && (
           <img
             src={selectedToken.image}
@@ -43,9 +43,18 @@ export default function AppContent() {
 }
 
 const styles = {
-  logo: {
-    width: 24,
-    height: 24,
-    marginRight: 8,
+  container: (theme) => ({
+    display: "flex",
+    flexDirection: "column",
+    gap: theme.spacing(2.5),
+  }),
+  heading: {
+    display: "flex",
+    alignItems: "center",
   },
+  logo: (theme) => ({
+    width: theme.spacing(3),
+    height: theme.spacing(3),
+    marginRight: theme.spacing(1),
+  }),
 };

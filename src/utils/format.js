@@ -11,7 +11,7 @@ export function formatPrice(value) {
   }
 
   return `$${num.toLocaleString(undefined, {
-    minimumFractionDigits: 0,
+    minimumFractionDigits: 2,
     maximumFractionDigits: 4,
   })}`;
 }
@@ -20,7 +20,7 @@ export function formatHeadingPrice(value) {
   const num = Number(value);
 
   return `$${num.toLocaleString(undefined, {
-    minimumFractionDigits: 0,
+    minimumFractionDigits: num >= 10 ? 0 : 2,
     maximumFractionDigits: 12,
   })}`;
 }

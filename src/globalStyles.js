@@ -1,19 +1,50 @@
 "use client";
 
-import { css, Global } from "@emotion/react";
+import { css, Global, useTheme } from "@emotion/react";
 
-const styles = css`
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
+export const GlobalStyles = () => {
+  const theme = useTheme();
 
-  body {
-    font-family: system-ui, sans-serif;
-    background-color: #0d1117;
-    color: #e6edf3;
-  }
-`;
+  return (
+    <Global
+      styles={css`
+        * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
 
-export const GlobalStyles = () => <Global styles={styles} />;
+        body {
+          font-family: system-ui, sans-serif;
+          background-color: ${theme.colors.background};
+          color: ${theme.colors.text};
+        }
+
+        /* Scrollbar styles */
+        *::-webkit-scrollbar {
+          width: ${theme.spacing(1)};
+          height: ${theme.spacing(1)};
+        }
+
+        *::-webkit-scrollbar-track {
+          background: ${theme.colors.background};
+        }
+
+        *::-webkit-scrollbar-thumb {
+          background-color: ${theme.colors.scrollbar};
+          border-radius: ${theme.spacing(0.5)};
+        }
+
+        *::-webkit-scrollbar-thumb:hover {
+          background-color: ${theme.colors.scrollbar};
+        }
+
+        /* Firefox support */
+        * {
+          scrollbar-width: thin;
+          scrollbar-color: ${theme.colors.scrollbar} ${theme.colors.background};
+        }
+      `}
+    />
+  );
+};
