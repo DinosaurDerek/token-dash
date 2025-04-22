@@ -17,4 +17,9 @@ export const theme = {
   border: "1px solid #30363d",
   borderRadius: "6px",
   spacing: (factor) => `${factor * 8}px`,
+  breakpoints: {
+    xs: "@media (max-width: 480px)",
+    sm: "@media (max-width: 640px)",
+    md: "@media (max-width: 768px)",
+  },
 };

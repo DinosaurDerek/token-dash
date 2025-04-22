@@ -22,12 +22,21 @@ const styles = {
     flexDirection: "column",
     minHeight: "100vh",
   },
-  content: {
+  content: (theme) => ({
     display: "flex",
     flex: 1,
-  },
+    flexDirection: "row",
+    [theme.breakpoints.sm]: {
+      flexDirection: "column",
+    },
+  }),
   main: (theme) => ({
     flex: 1,
     padding: theme.spacing(3),
+    height: `calc(100vh - ${theme.spacing(9)})`, // adjust for header height
+    overflow: "auto",
+    [theme.breakpoints.sm]: {
+      height: "auto",
+    },
   }),
 };
