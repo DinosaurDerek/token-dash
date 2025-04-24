@@ -20,7 +20,7 @@ export default function AppContent() {
     const timeout = setTimeout(async () => {
       try {
         setError(null);
-        const response = await fetchPriceHistory(selectedToken.id);
+        const response = await fetchPriceHistory(selectedToken.id, setError);
         setPriceHistory(response);
       } catch (err) {
         console.error("Failed to fetch price history:", err);

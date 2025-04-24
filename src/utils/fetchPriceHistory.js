@@ -1,32 +1,16 @@
-export async function fetchPriceHistory(tokenId, days = 7) {
-  try {
-    const res = await fetch(
-      `https://api.coingecko.com/api/v3/coins/${tokenId}/market_chart?vs_currency=usd&days=${days}`
-    );
+import { retryFetchJSON } from "@/utils/retryFetchJSON";
 
-    if (res.status === 429) {
-      throw new Error(
-        "Rate limit exceeded. Please wait a minute and try again."
-      );
-    }
+export async function fetchPriceHistory(tokenId, setError, days = 7) {
+  const json = await retryFetchJSON({
+    url: `https://api.coingecko.com/api/v3/coins/${tokenId}/market_chart?vs_currency=usd&days=${days}`,
+    setError,
+    notOkMessage: "Failed to fetch price history.",
+    typeErrorMessage:
+      "Latest data couldn't be fetched. This may be due to rate limiting. Please wait or try again in a minute.",
+  });
 
-    if (!res.ok) {
-      throw new Error("Failed to fetch price history.");
-    }
-
-    const json = await res.json();
-
-    return json.prices.map(([timestamp, price]) => ({
-      timestamp,
-      price,
-    }));
-  } catch (error) {
-    if (error instanceof TypeError) {
-      throw new Error(
-        "Latest data couldn't be fetched. This may be due to rate limiting. Please try again in a minute."
-      );
-    }
-
-    throw error;
-  }
+  return json.prices.map(([timestamp, price]) => ({
+    timestamp,
+    price,
+  }));
 }

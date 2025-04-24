@@ -19,7 +19,7 @@ export default function TokenList() {
       setLoading(true);
 
       try {
-        const response = await fetchTokens();
+        const response = await fetchTokens(setError);
         setTokens(response);
         setError(null);
       } catch (err) {
