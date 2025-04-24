@@ -7,6 +7,7 @@ import { fetchPriceHistory } from "@/utils/fetchPriceHistory";
 import { formatHeadingPrice } from "@/utils/format";
 import { useToken } from "@/context/TokenContext";
 import TokenChart from "@/components/TokenChart";
+import Message from "@/components/Message";
 
 export default function AppContent() {
   const { selectedToken } = useToken();
@@ -47,7 +48,7 @@ export default function AppContent() {
         {selectedToken.name} ({selectedToken.symbol.toUpperCase()})
       </h2>
       <p>Current price: {formatHeadingPrice(selectedToken.current_price)}</p>
-      {error && <p css={styles.error}>{error.message}</p>}
+      {error && <Message text={error.message} />}
       {priceHistory && <TokenChart data={priceHistory} />}
     </div>
   );
@@ -67,14 +68,5 @@ const styles = {
     width: theme.spacing(3),
     height: theme.spacing(3),
     marginRight: theme.spacing(1),
-  }),
-  error: (theme) => ({
-    color: theme.colors.focusOutline,
-    backgroundColor: theme.colors.card,
-    border: theme.border,
-    borderRadius: theme.borderRadius,
-    padding: theme.spacing(1),
-    fontSize: theme.fontSizes.small,
-    textAlign: "center",
   }),
 };
