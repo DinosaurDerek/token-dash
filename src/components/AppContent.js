@@ -8,16 +8,20 @@ import { formatHeadingPrice } from "@/utils/format";
 import { useToken } from "@/context/TokenContext";
 import TokenChart from "@/components/TokenChart";
 import Message from "@/components/Message";
+import Loader from "./Loader";
 
 export default function AppContent() {
   const { selectedToken } = useToken();
   const [priceHistory, setPriceHistory] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     if (!selectedToken) return;
 
     const timeout = setTimeout(async () => {
+      setLoading(true);
+
       try {
         setError(null);
         const response = await fetchPriceHistory(selectedToken.id, setError);
@@ -25,6 +29,9 @@ export default function AppContent() {
       } catch (err) {
         console.error("Failed to fetch price history:", err);
         setError(err);
+        setLoading(false);
+      } finally {
+        setLoading(false);
       }
     }, 500);
 
@@ -49,7 +56,14 @@ export default function AppContent() {
       </h2>
       <p>Current price: {formatHeadingPrice(selectedToken.current_price)}</p>
       {error && <Message text={error.message} />}
-      {priceHistory && <TokenChart data={priceHistory} />}
+      <div css={styles.chartWrapper}>
+        {(error || (loading && !priceHistory?.length)) && (
+          <div css={styles.loaderOverlay}>
+            <Loader />
+          </div>
+        )}
+        {!error && !!priceHistory?.length && <TokenChart data={priceHistory} />}
+      </div>
     </div>
   );
 }
@@ -69,4 +83,17 @@ const styles = {
     height: theme.spacing(3),
     marginRight: theme.spacing(1),
   }),
+  chartWrapper: {
+    position: "relative",
+    minHeight: 300,
+  },
+  loaderOverlay: {
+    position: "absolute",
+    inset: 0,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1,
+    backgroundColor: "transparent",
+  },
 };
