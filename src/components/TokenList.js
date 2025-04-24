@@ -3,26 +3,39 @@
 
 import { useEffect, useState } from "react";
 import { formatPercent, formatPrice } from "@/utils/format";
-import { fetchTopTokens } from "@/utils/fetchTokens";
+import { fetchTokens } from "@/utils/fetchTokens";
 import { useToken } from "@/context/TokenContext";
 
 export default function TokenList() {
   const { selectedToken, setSelectedToken } = useToken();
   const [tokens, setTokens] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchTopTokens()
-      .then(setTokens)
-      .catch(console.error)
-      .finally(() => setLoading(false));
-  }, []);
+    const loadTokens = async () => {
+      setLoading(true);
 
-  if (loading) return <p>Loading tokens...</p>;
+      try {
+        const response = await fetchTokens();
+        setTokens(response);
+        setError(null);
+      } catch (err) {
+        console.error("Failed to fetch top tokens:", err);
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadTokens();
+  }, []);
 
   return (
     <div css={styles.container}>
       <h2 css={styles.heading}>Top Tokens</h2>
+      {loading && <p>Loading tokens...</p>}
+      {error && <p css={styles.error}>{error.message}</p>}
       <div css={styles.list}>
         {tokens.map((token) => (
           <button
@@ -94,5 +107,14 @@ const styles = {
   price: (theme) => ({
     fontSize: theme.fontSizes.small,
     opacity: 0.8,
+  }),
+  error: (theme) => ({
+    color: theme.colors.focusOutline,
+    backgroundColor: theme.colors.card,
+    border: theme.border,
+    borderRadius: theme.borderRadius,
+    padding: theme.spacing(1),
+    fontSize: theme.fontSizes.small,
+    textAlign: "center",
   }),
 };

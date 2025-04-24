@@ -11,18 +11,28 @@ import TokenChart from "@/components/TokenChart";
 export default function AppContent() {
   const { selectedToken } = useToken();
   const [priceHistory, setPriceHistory] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (!selectedToken) return;
 
-    const timeout = setTimeout(() => {
-      fetchPriceHistory(selectedToken.id).then(setPriceHistory);
+    const timeout = setTimeout(async () => {
+      try {
+        setError(null);
+        const response = await fetchPriceHistory(selectedToken.id);
+        setPriceHistory(response);
+      } catch (err) {
+        console.error("Failed to fetch price history:", err);
+        setError(err);
+      }
     }, 500);
 
     return () => clearTimeout(timeout);
   }, [selectedToken]);
 
-  if (!selectedToken) return <p>Select a token to view details</p>;
+  if (!selectedToken) {
+    return <p>Select a token to view details</p>;
+  }
 
   return (
     <div css={styles.container}>
@@ -37,6 +47,7 @@ export default function AppContent() {
         {selectedToken.name} ({selectedToken.symbol.toUpperCase()})
       </h2>
       <p>Current price: {formatHeadingPrice(selectedToken.current_price)}</p>
+      {error && <p css={styles.error}>{error.message}</p>}
       {priceHistory && <TokenChart data={priceHistory} />}
     </div>
   );
@@ -56,5 +67,14 @@ const styles = {
     width: theme.spacing(3),
     height: theme.spacing(3),
     marginRight: theme.spacing(1),
+  }),
+  error: (theme) => ({
+    color: theme.colors.focusOutline,
+    backgroundColor: theme.colors.card,
+    border: theme.border,
+    borderRadius: theme.borderRadius,
+    padding: theme.spacing(1),
+    fontSize: theme.fontSizes.small,
+    textAlign: "center",
   }),
 };

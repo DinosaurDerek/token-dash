@@ -13,7 +13,7 @@ export default function AppSidebar() {
 
 const styles = {
   container: (theme) => ({
-    minWidth: "200px",
+    width: "200px",
     backgroundColor: theme.colors.backgroundSecondary,
     padding: theme.spacing(2),
     borderRight: theme.border,
