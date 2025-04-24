@@ -21,6 +21,10 @@ export default function TokenList() {
         const response = await fetchTokens(setError);
         setTokens(response);
         setError(null);
+
+        if (response.length) {
+          setSelectedToken(response[0]);
+        }
       } catch (err) {
         console.error("Failed to fetch top tokens:", err);
         setError(err);
