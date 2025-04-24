@@ -2,22 +2,21 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { keyframes } from "@emotion/react";
 
 import { formatPercent, formatPrice } from "@/utils/format";
 import { fetchTokens } from "@/utils/fetchTokens";
 import { useToken } from "@/context/TokenContext";
 import Message from "@/components/Message";
+import Loader from "@/components/Loader";
 
 export default function TokenList() {
   const { selectedToken, setSelectedToken } = useToken();
   const [tokens, setTokens] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const loadTokens = async () => {
-      setLoading(true);
-
       try {
         const response = await fetchTokens(setError);
         setTokens(response);
@@ -25,8 +24,6 @@ export default function TokenList() {
       } catch (err) {
         console.error("Failed to fetch top tokens:", err);
         setError(err);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -36,8 +33,12 @@ export default function TokenList() {
   return (
     <div css={styles.container}>
       <h2 css={styles.heading}>Top Tokens</h2>
-      {loading && <p>Loading tokens...</p>}
-      {error && <Message text={error.message} />}
+      {error && (
+        <div>
+          <Message text={error.message} />
+          <Loader />
+        </div>
+      )}
       <div css={styles.list}>
         {tokens.map((token) => (
           <button
@@ -48,7 +49,10 @@ export default function TokenList() {
             ]}
             onClick={() => setSelectedToken(token)}
           >
-            <div css={styles.name}>{token.name}</div>
+            <div css={styles.nameWrapper}>
+              <img src={token.image} alt={token.name} css={styles.icon} />
+              <span>{token.name}</span>
+            </div>
             <div css={styles.price}>
               {formatPrice(token.current_price)} (
               {formatPercent(token.price_change_percentage_24h)})
@@ -59,6 +63,17 @@ export default function TokenList() {
     </div>
   );
 }
+
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 
 const styles = {
   container: (theme) => ({
@@ -74,6 +89,9 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     gap: theme.spacing(0.75),
+    opacity: 0,
+    transform: "translateY(4px)",
+    animation: `${fadeInUp} 800ms ease-out forwards`,
   }),
   button: (theme) => ({
     display: "flex",
@@ -103,11 +121,20 @@ const styles = {
     },
     cursor: "auto",
   }),
-  name: {
-    fontWeight: "bold",
+  nameWrapper: (theme) => ({
+    display: "flex",
+    alignItems: "center",
+    gap: theme.spacing(1),
+  }),
+  icon: {
+    width: 20,
+    height: 20,
+    borderRadius: "50%",
+    objectFit: "cover",
   },
   price: (theme) => ({
     fontSize: theme.fontSizes.small,
     opacity: 0.8,
+    paddingLeft: theme.spacing(3.5),
   }),
 };

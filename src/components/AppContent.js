@@ -8,7 +8,7 @@ import { formatHeadingPrice } from "@/utils/format";
 import { useToken } from "@/context/TokenContext";
 import TokenChart from "@/components/TokenChart";
 import Message from "@/components/Message";
-import Loader from "./Loader";
+import Loader from "@/components/Loader";
 
 export default function AppContent() {
   const { selectedToken } = useToken();
