@@ -4,9 +4,9 @@
 import { useEffect, useState } from "react";
 import { keyframes } from "@emotion/react";
 
-import { formatPercent, formatPrice } from "@/utils/format";
 import { fetchTokens } from "@/utils/fetchTokens";
 import { useToken } from "@/context/TokenContext";
+import TokenCard from "@/components/TokenCard";
 import Message from "@/components/Message";
 import Loader from "@/components/Loader";
 
@@ -32,7 +32,7 @@ export default function TokenList() {
     };
 
     loadTokens();
-  }, []);
+  }, [setError, setSelectedToken, setTokens]);
 
   return (
     <div css={styles.container}>
@@ -45,23 +45,12 @@ export default function TokenList() {
       )}
       <div css={styles.list}>
         {tokens.map((token) => (
-          <button
+          <TokenCard
             key={token.id}
-            css={[
-              styles.button,
-              selectedToken?.id === token.id && styles.selected,
-            ]}
+            token={token}
             onClick={() => setSelectedToken(token)}
-          >
-            <div css={styles.nameWrapper}>
-              <img src={token.image} alt={token.name} css={styles.icon} />
-              <span>{token.name}</span>
-            </div>
-            <div css={styles.price}>
-              {formatPrice(token.current_price)} (
-              {formatPercent(token.price_change_percentage_24h)})
-            </div>
-          </button>
+            isSelected={selectedToken?.id === token.id}
+          />
         ))}
       </div>
     </div>
@@ -96,49 +85,5 @@ const styles = {
     opacity: 0,
     transform: "translateY(4px)",
     animation: `${fadeInUp} 800ms ease-out forwards`,
-  }),
-  button: (theme) => ({
-    display: "flex",
-    flexDirection: "column",
-    backgroundColor: theme.colors.card,
-    border: theme.border,
-    borderRadius: theme.borderRadius,
-    padding: `${theme.spacing(1)} ${theme.spacing(1.25)}`,
-    cursor: "pointer",
-    color: theme.colors.text,
-    fontSize: theme.fontSizes.medium,
-    textAlign: "left",
-    transition: "background-color 0.2s",
-    "&:hover": {
-      backgroundColor: theme.colors.cardHover,
-    },
-    "&:focus": {
-      outline: `2px solid ${theme.colors.focusOutline}`,
-      outlineOffset: "2px",
-    },
-  }),
-  selected: (theme) => ({
-    backgroundColor: theme.colors.primary,
-    color: "#fff",
-    "&:hover": {
-      backgroundColor: theme.colors.primary,
-    },
-    cursor: "auto",
-  }),
-  nameWrapper: (theme) => ({
-    display: "flex",
-    alignItems: "center",
-    gap: theme.spacing(1),
-  }),
-  icon: {
-    width: 20,
-    height: 20,
-    borderRadius: "50%",
-    objectFit: "cover",
-  },
-  price: (theme) => ({
-    fontSize: theme.fontSizes.small,
-    opacity: 0.8,
-    paddingLeft: theme.spacing(3.5),
   }),
 };

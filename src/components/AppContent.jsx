@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 import { fetchPriceHistory } from "@/utils/fetchPriceHistory";
 import { formatHeadingPrice } from "@/utils/format";
@@ -46,10 +47,12 @@ export default function AppContent() {
     <div css={styles.container}>
       <h2 css={styles.heading}>
         {selectedToken.image && (
-          <img
+          <Image
             src={selectedToken.image}
             alt={selectedToken.symbol.toUpperCase()}
             css={styles.logo}
+            width={24}
+            height={24}
           />
         )}
         {selectedToken.name} ({selectedToken.symbol.toUpperCase()})
@@ -79,9 +82,8 @@ const styles = {
     alignItems: "center",
   },
   logo: (theme) => ({
-    width: theme.spacing(3),
-    height: theme.spacing(3),
     marginRight: theme.spacing(1),
+    borderRadius: "50%",
   }),
   chartWrapper: {
     position: "relative",
