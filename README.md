@@ -23,6 +23,9 @@ npm install
 
 # Run the dev server
 npm run dev
+
+# Run unit tests
+npm run test
 ```
 
 ## TODOs

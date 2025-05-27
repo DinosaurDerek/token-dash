@@ -4,8 +4,8 @@ import { createContext, useContext, useState } from "react";
 
 const TokenContext = createContext();
 
-export const TokenProvider = ({ children }) => {
-  const [selectedToken, setSelectedToken] = useState(null);
+export const TokenProvider = ({ children, initialToken }) => {
+  const [selectedToken, setSelectedToken] = useState(initialToken);
 
   return (
     <TokenContext.Provider value={{ selectedToken, setSelectedToken }}>

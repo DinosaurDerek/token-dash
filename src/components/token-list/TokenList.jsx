@@ -6,7 +6,7 @@ import { keyframes } from "@emotion/react";
 
 import { fetchTokens } from "@/utils/fetchTokens";
 import { useToken } from "@/context/TokenContext";
-import TokenCard from "@/components/TokenCard";
+import TokenCard from "@/components/token-card/TokenCard";
 import Message from "@/components/Message";
 import Loader from "@/components/Loader";
 

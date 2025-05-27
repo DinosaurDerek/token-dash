@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 "use client";
 
-import TokenList from "./TokenList";
+import TokenList from "./token-list/TokenList";
 
 export default function AppSidebar() {
   return (
