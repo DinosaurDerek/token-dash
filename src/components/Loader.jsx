@@ -3,7 +3,7 @@ import { keyframes } from "@emotion/react";
 
 export default function Loader() {
   return (
-    <div css={styles.container}>
+    <div css={styles.container} data-testid="loader">
       <div css={(theme) => styles.dot(0, theme)} />
       <div css={(theme) => styles.dot(0.2, theme)} />
       <div css={(theme) => styles.dot(0.4, theme)} />

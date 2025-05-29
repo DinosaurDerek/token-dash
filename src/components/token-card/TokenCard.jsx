@@ -8,8 +8,10 @@ import { formatPercent, formatPrice } from "@/utils/format";
 export default function TokenCard({ onClick, token, isSelected = false }) {
   return (
     <button
+      className={isSelected ? "selected" : ""}
       css={[styles.button, isSelected && styles.selected]}
       onClick={onClick}
+      data-testid="token-card"
     >
       <div css={styles.nameWrapper}>
         <Image
@@ -19,7 +21,7 @@ export default function TokenCard({ onClick, token, isSelected = false }) {
           width={20}
           height={20}
         />
-        <span>{token.name}</span>
+        <span data-testid="token-name">{token.name}</span>
       </div>
       <div css={styles.price}>
         {formatPrice(token.current_price)} (

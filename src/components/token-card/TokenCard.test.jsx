@@ -23,7 +23,7 @@ describe("TokenCard", () => {
     const handleClick = jest.fn();
     render(<TokenCard token={token} onClick={handleClick} />);
 
-    fireEvent.click(screen.getByRole("button"));
+    fireEvent.click(screen.getByTestId("token-card"));
 
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
@@ -31,7 +31,7 @@ describe("TokenCard", () => {
   it("has selected styles when isSelected is true", () => {
     render(<TokenCard token={token} onClick={() => {}} isSelected />);
 
-    const button = screen.getByRole("button");
+    const button = screen.getByTestId("token-card");
     expect(button).toHaveStyle(`backgroundColor: ${theme.colors.primary}`);
     expect(button).toBeInTheDocument();
   });

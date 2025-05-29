@@ -45,7 +45,7 @@ export default function AppContent() {
 
   return (
     <div css={styles.container}>
-      <h2 css={styles.heading}>
+      <h2 css={styles.heading} data-testid="token-heading">
         {selectedToken.image && (
           <Image
             src={selectedToken.image}
@@ -60,7 +60,7 @@ export default function AppContent() {
       <p>Current price: {formatHeadingPrice(selectedToken.current_price)}</p>
       {error && <Message text={error.message} />}
       <div css={styles.chartWrapper}>
-        {(error || (loading && !priceHistory?.length)) && (
+        {(error || loading) && (
           <div css={styles.loaderOverlay}>
             <Loader />
           </div>

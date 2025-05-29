@@ -35,7 +35,7 @@ export default function TokenChart({ data }) {
   }, [data]);
 
   return (
-    <div css={styles.container}>
+    <div css={styles.container} data-testid="token-chart">
       <ResponsiveContainer>
         <LineChart data={chartData}>
           <XAxis dataKey="time" ticks={xAxisTicks.slice(1)} />
