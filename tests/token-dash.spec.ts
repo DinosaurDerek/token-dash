@@ -47,7 +47,7 @@ test.describe("Token Dash", () => {
       }
     );
 
-    await page.goto("http://localhost:3000");
+    await page.goto("http://localhost:3000", { waitUntil: "networkidle" });
   });
 
   test("displays the token list and default selection", async ({ page }) => {

@@ -26,6 +26,9 @@ npm run dev
 
 # Run unit tests
 npm run test
+
+# Run end-to-end tests
+npm run test:e2e
 ```
 
 ## TODOs
